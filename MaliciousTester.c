@@ -57,9 +57,8 @@ int main() {
 	// printf("Debug Message: %s\n", debugMessage);
 
 	// Show the user a message
-	MessageBoxA(NULL, "X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*",
-		"Fancy looking string :)",
-		MB_OK | MB_ICONINFORMATION);
+	const char* eicar = "X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*";
+	MessageBoxA(NULL, eicar, "Fancy looking string : )", MB_OK | MB_ICONINFORMATION);
 
 	// Shellcode to launch calc.exe; not encoded or anything fancy
 	//msfvenom -p windows/x64/exec CMD=calc.exe -f c
