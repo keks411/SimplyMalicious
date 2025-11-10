@@ -1,15 +1,26 @@
+//EDU for Entropy and strings
+
 #include <Windows.h>
 #include <stdio.h>
 
 //------------------------------------------------------------------------------------------//
 // DO NOT TOUCH THIS STUFF BELOW HERE
 typedef LPVOID(WINAPI* fnVirtualAlloc)(LPVOID lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect);
-#define SCAN_STRING "UniOffenburg2025"
+const char* test_string = "UniOffenburg2025";
+void test_func() {
+	OutputDebugStringA(test_string);
+}
 // DO NOT TOUCH THIS STUFF ABOVE HERE
 //------------------------------------------------------------------------------------------//
 
 
-// Helper functions
+
+
+
+
+
+
+
 // ROT13
 void rot13(char* str) {
 	// Iterate through each character of the string until the null terminator is reached.
@@ -32,9 +43,14 @@ void rot13(char* str) {
 }
 
 
-
-
 int main() {
+	//------------------------------------------------------------------------------------------//
+	// DO NOT TOUCH THIS STUFF BELOW HERE
+	test_func();
+	// DO NOT TOUCH THIS STUFF ABOVE HERE
+	//------------------------------------------------------------------------------------------//
+
+
 	// Debugging message
 	// char debugMessage[] = "X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*";
 	// rot13(debugMessage);
@@ -106,6 +122,9 @@ int main() {
 	else {
 		printf("[+] CreateThread succeeded. Thread Handle: %p\n", hThread);
 	}
+
+
+	WaitForSingleObject(hThread, INFINITE);
 
 	return 0;
 
